@@ -1,0 +1,50 @@
+@extends('admin.layout.master')
+@section('title','thêm mới loại sản phẩm')
+@section('content')
+<div class="wrapper bg-light">
+@component('admin.layout.components')
+	sửa loại sản phẩm
+@endcomponent
+@if(count($errors)>0)
+<div class="row">
+	<div class="col-12 alert alert-danger">
+		@foreach($errors->all() as $err)
+		{{ $err }} <br>
+		@endforeach
+	</div>
+</div>
+@endif
+@if (Session::has('thongbao'))
+	{{-- expr --}}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12 ">
+				<div class="alert alert-success">{{ Session::get('thongbao') }}</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+			<a class="btn btn-light" href="{{ route('productType.index') }}">trở về trang danh sách</a></div>
+			</div>
+	</div>
+@endif
+	<form action="{{ route('productType.update',$productType->id) }}" method="post" enctype="multipart/form-data">
+		@method('PATCH')
+		@csrf
+		<fieldset class="form-group">
+			<label for="exampleInputName1">name:</label>
+			<input type="text" name="name" class="form-control" id="exampleInputName1" placeholder="{{ $productType->name }}">
+		</fieldset>
+		<fieldset class="form-group">
+			<label for="exampleInputName1">description:</label>
+			<input type="text" name="description" class="form-control" id="exampleInputName1" placeholder="{{ $productType->description }}">
+		</fieldset>
+		<fieldset class="form-group">
+			<label for="exampleInputName1">image:</label>
+			<input type="file" name="image" class="form-control" id="exampleInputName1" placeholder="{{ $productType->image }}">
+		</fieldset>
+		
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+</div>
+@endsection
