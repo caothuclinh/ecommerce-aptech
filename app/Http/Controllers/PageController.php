@@ -13,6 +13,9 @@ use App\Product;
 use App\Comment;
 use Session;
 use App\Cart;
+use App\Customer;
+use App\Bill;
+use App\BillDetail;
 class PageController extends Controller
 {
     //
@@ -173,5 +176,45 @@ class PageController extends Controller
         $user = Auth::id();
         $address = Address::where('id_user',$user)->get();
         return view('show_view.pages.check_out',['address' => $address]);
+    }
+    public function postCheckout(Request $request){
+        $cart = Session('cart');
+        $customer = new Customer;
+        $customer->name = Auth::user()->name;
+        $customer->email = Auth::user()->email;
+        $address = Address::where('id_user',Auth::id() AND 'default', '1' )->toArray();
+        foreach ($address as $ar) {
+            if($ar->default){
+                $addr = $ar->city . ' - ' . $ar->district . ' - ' . $ar->ward . ' - ' . $ar->home . ' - ' . $ar->phone_number ;
+            }
+        }
+        $customer->address = $addr;
+        if($request->note == null){
+            $customer->note = null;
+        }
+        else{$customer->note = $request->note;}
+        $customer->save();
+        $bill = new Bill;
+        $bill->id_customer = $customer->id;
+        $bill->date = date('Y-m-d');
+        $bill->totalPrice = $cart->totalPrice;
+        $bill->payment = $request->pay;
+        if($request->note == null){
+            $bill->note = null;
+        }
+        else{$bill->note = $request->note;}
+        $bill->save();
+        //luu don hang chi tiet
+        foreach($cart->items as $key => $value){
+            $bill_detail = new BillDetail;
+            $bill_detail->id_bill = $bill->id;
+            $bill_detail->id_product = $key;
+            $bill_detail->quantity = $value['qty'];
+            $bill_detail->unit_price = ($value['price']/$value['qty']);
+            $bill_detail->save();
+        }
+        //loai bo don hang
+        Session::forget('cart');
+        return redirect()->back()->with('thongbao','đặt hàng thành công');
     }
 }
