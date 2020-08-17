@@ -107,15 +107,5 @@ Route::group(['prefix' => 'front_end'],function(){
 		'uses' => 'PageController@postDelItemcart'
 	]);
 	Route::get('xac-nhan-gio-hang','PageController@checkout')->name('cart.getcheckout');
-	Route::get('dia-chi-mac-dinh',function(){
-		$address = Address::where('id_user', Auth::id())->get();
-		
-			foreach ($address as $add) {
-				if($add->default != null){
-				$diachi = $add->city . " - " . $add->district . " - " . $add->ward . " - " . $add->home . " - " . $add->phone_number;
-				}
-			}
-				echo $diachi;
-		// echo $address->home;
-	});
+	Route::post('xac-nhan-gio-hang','PageController@postCheckout')->name('cart.postcheckout');
 });

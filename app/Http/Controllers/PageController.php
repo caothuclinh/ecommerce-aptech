@@ -182,7 +182,7 @@ class PageController extends Controller
         $customer = new Customer;
         $customer->name = Auth::user()->name;
         $customer->email = Auth::user()->email;
-        $address = Address::where('id_user',Auth::id() AND 'default', '1' )->toArray();
+        $address = Address::where([['id_user', '=', Auth::id()],['default', '=','1']])->first();
         foreach ($address as $ar) {
             if($ar->default){
                 $addr = $ar->city . ' - ' . $ar->district . ' - ' . $ar->ward . ' - ' . $ar->home . ' - ' . $ar->phone_number ;

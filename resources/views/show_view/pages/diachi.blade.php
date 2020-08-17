@@ -45,13 +45,6 @@
 									<td>{{ $data->home }}</td>
 									<td>{{ $data->phone_number }}</td>
 									<td><a href="{{ route('address.edit',$data->id) }}" class="btn btn-outline-secondary"> Sửa <i class="fas fa-edit"></i></a></td>
-									<td>
-										<form action="{{ route('address.delete',$data->id) }}" method="post">
-											@method('DELETE')
-											@csrf
-											<button type="submit" class="btn btn-outline-danger">xóa <i class="fas fa-times"></i></button>
-										</form>
-									</td>
 								</tr>
 							@else
 								<tr class="text-info">

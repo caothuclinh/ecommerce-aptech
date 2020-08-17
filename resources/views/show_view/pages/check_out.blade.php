@@ -7,12 +7,17 @@ xác nhận thông tin
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
+	@if(Session::has('thongbao'))
+		<h3 class="alert-success alert">{{ Session::get('thongbao') }}</h3>
+	@endif
 	@if (Auth::check())
 		@if(Session::has('cart'))
 		<h3 class="text-info"><i class="fas fa-cart-plus"></i>{{ Auth::user()->name }}</h3>
 			</div>
 		</div>
-		<form action="" method="">
+		<form action="{{ route('cart.postcheckout') }}" method="post">
+			@method('POST')
+			@csrf
 		<div class="row">
 			<div class="col-12 col-md-6">
 				  <div class="form-row">
@@ -31,7 +36,7 @@ xác nhận thông tin
 					    @foreach($address as $add)
 						    @if($add->default != null)
 						    <p>
-						    	{{ $add->city }} - {{ $add->district }} - {{ $add->ward }}
+						    	{{ $add->city }} - {{ $add->district }} - {{ $add->ward }} - {{ $add->home }}
 						    </p>
 						    <p> - sdt: {{ $add->phone_number }}</p>
 						    @endif

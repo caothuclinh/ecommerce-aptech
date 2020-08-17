@@ -24,10 +24,10 @@ class UserController extends Controller
     	);
     	$credentials = array('email' => $req->email,'password' => $req->password);
     	if(Auth::attempt($credentials)){
-    		if(Auth::user()->power == 1){
+    		if(Auth::user()->power === 1){
     		return redirect()->route('productType.index');
     		}
-    		elseif(Auth::user()->power != 1){
+    		elseif(Auth::user()->power !== 1){
     			return redirect()->back()->with('thongbao', 'tài khoản hoặc mật khẩu không chính xác');
     		}
     	}

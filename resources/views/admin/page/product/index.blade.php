@@ -7,13 +7,13 @@
 @endcomponent
 @if (Session::has('mesage'))
 	{{-- expr --}}
-	<div class="containern">
+	<div class="container">
 		<div class="row">
 			<div class="col alert alert-{{ Session::get('flag') }}">{{ Session::get('mesage') }}</div>
 		</div>
 	</div>
 @endif
-	<div class="container">
+	<div class="container-push">
 		<div class="row">
 			<div class="col-12">
 				<?php $i =0;?>
@@ -37,8 +37,8 @@
 						<tr>
 							<td>{{ $i }}</td>
 							<td>{{ $sp->id }}</td>
-							<td>{{ $sp->name }}</td>
-							<td>{{ $sp->unit_price }}</td>
+							<td style="text-align: left;">{{ $sp->name }}</td>
+							<td>{{ number_format($sp->unit_price) }} VNĐ</td>
 
 							@if($lenght <= 0)
 							<td >
